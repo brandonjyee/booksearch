@@ -1,4 +1,4 @@
-package bjy;
+package booksearch;
 
 public class Main {
 
