@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <display-name>Fiction Writer's Toolbox</display-name>
+    <description>
+        Tools for Blackbird Publishing
+    </description>
+
+    <servlet>
+        <servlet-name>BookQueryServlet</servlet-name>
+        <servlet-class>booksearch.servlet.BookQuery</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookStatisticsServlet</servlet-name>
+        <servlet-class>booksearch.servlet.BookStatistics</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EmotionThesaurusServlet</servlet-name>
+        <servlet-class>booksearch.servlet.EmotionThesaurus</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BookQueryServlet</servlet-name>
+        <url-pattern>/bookquery</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookStatisticsServlet</servlet-name>
+        <url-pattern>/bookstatistics</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmotionThesaurusServlet</servlet-name>
+        <url-pattern>/emotionthesaurus</url-pattern>
+    </servlet-mapping>
+
+</web-app> 
