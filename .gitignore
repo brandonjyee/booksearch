@@ -1,2 +1,4 @@
 /bin/
 /target/
+/.apt_generated/
+app.log

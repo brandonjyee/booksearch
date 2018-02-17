@@ -2,6 +2,7 @@ package booksearch.solr;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +23,9 @@ import booksearch.book.Chapter;
 import booksearch.book.Paragraph;
 import booksearch.emotion_thesaurus.Sections;
 import booksearch.util.Util;
+import lombok.extern.apachecommons.CommonsLog;
 
+@CommonsLog
 public class Ingest {
 //	private SolrClient solrClient;
 	
@@ -31,6 +34,7 @@ public class Ingest {
 	}
 	
 	public static void main(String[] args) throws SolrServerException, IOException {
+		
 //		SolrManager solrManager = SolrManager.getInstance();
 		//SolrServer server = solrManager.getServer(SolrCore.BOOK_SEARCH.getKey());
 //		SolrServer server = solrManager.getServer(SolrCore.EMOTION_THESAURUS.getKey());
@@ -50,12 +54,12 @@ public class Ingest {
 	public static void setupCore_BookQuery() throws SolrServerException, IOException {
 		SolrManager solrManager = SolrManager.getInstance();
 		SolrClient solrClient = solrManager.getSolrClient(SolrCore.BOOK_SEARCH.getKey());
-		System.out.println("Deleting BOOK_SEARCH core...");
+		log.info("Deleting BOOK_SEARCH core...");
 		solrManager.deleteAll(SolrCore.BOOK_SEARCH.getKey());
-		System.out.println("Deleted BOOK_SEARCH core.");
-		System.out.println("Starting sending books to BOOK_SEARCH core...");
+		log.info("Deleted BOOK_SEARCH core.");
+		log.info("Starting sending books to BOOK_SEARCH core...");
 		sendAllBooks_BookQuery(solrClient);
-		System.out.println("Finished sending books to BOOK_SEARCH core.");
+		log.info("Finished sending books to BOOK_SEARCH core.");
 	}
 	
 	public static void setupCore_EmoThesaurus() throws SolrServerException, IOException {
@@ -66,8 +70,13 @@ public class Ingest {
 	}
 	
 	public static void sendEmotion_EmoThesaurus(SolrClient server) throws SolrServerException, IOException {
-		File emotionDir = new File("./databanks/emotion_thesaurus");
-		File[] emotionFiles = emotionDir.listFiles();
+		File[] emotionFiles = Util.getResourceFolderFiles("databanks/emotion_thesaurus");
+		
+		//ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+		//props.load(classLoader.getResourceAsStream("databanks/emotion_thesaurus"));
+//		InputStream is = classLoader.getResourceAsStream("databanks/emotion_thesaurus");
+//		File emotionDir = new File("./databanks/emotion_thesaurus");
+		//File[] emotionFiles = emotionDir.listFiles();
 		Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
 		for (File emotionFile : emotionFiles) {
 			//System.out.println(emotionFile.getName());
@@ -96,9 +105,9 @@ public class Ingest {
 	public static void sendAllBooks_BookQuery(SolrClient server) throws SolrServerException, IOException {
 		Collection<Book> books = BookManager.getInstance().getAllBooks();
 		for (Book book : books) {
-			System.out.println("Sending book " + book.getTitle() + "...");
+			log.info("Sending book " + book.getTitle() + "...");
 			sendBook(server, book);
-			System.out.println("Finished sending book " + book.getTitle() + ".");
+			log.info("Finished sending book " + book.getTitle() + ".");
 		}
 	}
 	

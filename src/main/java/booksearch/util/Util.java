@@ -1,11 +1,13 @@
 package booksearch.util;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import booksearch.solr.JoinType;
 
@@ -96,5 +98,12 @@ public class Util {
 		}
 		sb.delete(sb.length() - 3, sb.length());
 		return sb.toString();
+	}
+	
+	public static File[] getResourceFolderFiles(String folder) {
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		URL url = loader.getResource(folder);
+		String path = url.getPath();
+		return new File(path).listFiles();
 	}
 }
